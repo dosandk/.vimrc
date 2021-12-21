@@ -2,11 +2,23 @@ call plug#begin('~/.vim/plugged')
 
 " Colorschemas"
 Plug 'morhetz/gruvbox'
-														
+
+" Vimux
+Plug 'preservim/vimux'
+
+" NERDTree
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'https://github.com/tiagofumo/vim-nerdtree-syntax-highlight'
+
+" Show dotted hidden files in NERDTree
+let NERDTreeShowHidden=1
+
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>1 :NERDTreeFind<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+"nnoremap <C-f> :NERDTreeFind<CR>
 
 " Git plugins
 Plug 'airblade/vim-gitgutter'
@@ -103,13 +115,6 @@ let g:ultest_use_pty = 1
 nmap <C-_>   <Plug>NERDCommenterToggle
 vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
 
-" NERDTree shortcuts 
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <leader>1 :NERDTreeFind<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-"nnoremap <C-n> :NERDTree<CR>
-"nnoremap <C-f> :NERDTreeFind<CR>
-
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
@@ -117,9 +122,6 @@ autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | e
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
-
-" Show dotted hidden files in NERDTree
-let NERDTreeShowHidden=1
 
 " Emmet settings
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
@@ -136,11 +138,6 @@ autocmd BufRead * normal zR
 nnoremap  <silent> <Tab>    :bnext<CR>
 " previous buffer;
 nnoremap  <silent> <S-Tab>  :bprevious<CR>
-" `_bufferNumber_ + <Tab>` - go exact the buffer number;
-" nnoremap  <silent> <Tab>            <C-^>
-
-" CTRL-C to copy (visual mode)
-" imap <S-Tab> <C-d>
 
 map <Leader> <Plug>(easymotion-prefix)
 map <silent> <C-h> :call WinMove('h')<CR>
@@ -162,7 +159,7 @@ function! WinMove(key)
 endfunction
 	
 " mbbill/undotree
-nnoremap <F5> :UndotreeToggle<CR>
+nnoremap <silent> <C-u> :UndotreeToggle<CR>
 
 " PLUGIN: FZF
 nnoremap <silent> <Leader>b :Buffers<CR>
