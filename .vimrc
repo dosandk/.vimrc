@@ -6,6 +6,9 @@ Plug 'morhetz/gruvbox'
 " Vimux
 Plug 'preservim/vimux'
 
+" Vim expand 
+Plug 'terryma/vim-expand-region'
+
 " NERDTree
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -20,11 +23,16 @@ nnoremap <leader>1 :NERDTreeFind<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 "nnoremap <C-f> :NERDTreeFind<CR>
 
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
 " Git plugins
 Plug 'airblade/vim-gitgutter'
 Plug 'rbong/vim-flog'
 Plug 'tpope/vim-fugitive'
 Plug 'kdheepak/lazygit.nvim'
+
+nmap <leader>gs :G<CR>
 
 " Autocomplite
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -72,6 +80,10 @@ Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
 " Initialize plugin system
 call plug#end()
 
+let g:delimitMate_expand_cr = 1
+noremap <Space> <Nop> 
+map <Space> <Leader>
+
 " Initialize gruvbox theme
 colorscheme gruvbox
 
@@ -82,8 +94,13 @@ set encoding=utf-8
 set spell spelllang=en_us
 set mouse=a
 
-set tabstop=2 softtabstop=2
+" Identation settings
+"filetype plugin indent on
+set tabstop=8
 set shiftwidth=2
+set softtabstop=2
+set expandtab 
+
 set relativenumber
 set number
 "set nohlsearch
@@ -99,11 +116,13 @@ set smartcase
 set noswapfile
 set nobackup
 " share clipboard across vim sessions
-set clipboard=unnamedplus
+set clipboard=unnamed
 
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
+nnoremap <leader>bd :1,100bd<CR>
+
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
 
@@ -120,8 +139,8 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 
 " Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
+" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+"   \ quit | endif
 
 " Emmet settings
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
@@ -174,3 +193,7 @@ nnoremap <silent> <Leader>h: :History:<CR>
 nnoremap <silent> <Leader>h/ :History/<CR>
 
 set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+
+noremap <silent> <C-S>          :update<CR>
+vnoremap <silent> <C-S>         <C-C>:update<CR>
+inoremap <silent> <C-S>         <C-O>:update<CR>
